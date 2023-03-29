@@ -1,0 +1,36 @@
+{
+  "name": "campus-app",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint",
+    "cm": "cz"
+  },
+  "dependencies": {
+    "next": "^13.2.4"
+  },
+  "devDependencies": {
+    "@commitlint/cli": "^17.5.1",
+    "@types/node": "18.15.5",
+    "@types/react": "18.0.28",
+    "commitizen": "^4.3.0",
+    "commitlint-config-gitmoji": "^2.3.1",
+    "cz": "^1.8.2",
+    "cz-customizable": "^7.0.0",
+    "eslint": "^8.36.0",
+    "eslint-config-next": "^13.2.4",
+    "husky": "^8.0.3",
+    "typescript": "5.0.2"
+  },
+  "config": {
+    "commitizen": {
+      "path": "./node_modules/cz-customizable"
+    },
+    "cz-customizable": {
+      "config": "./config/git/commitizen.config.js"
+    }
+  }
+}
