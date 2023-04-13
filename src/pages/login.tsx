@@ -1,9 +1,9 @@
 import Input from "@/ui/Input";
-import axios from "axios";
 import { NextPage } from "next";
 import { useForm } from "react-hook-form";
+import accountRepository from "../../lib/repositories/account.repository";
 
-interface IFormInputs {
+export interface IFormInputs {
   email: string;
   password: string;
 }
@@ -15,11 +15,8 @@ const Login: NextPage = () => {
     formState: { errors },
   } = useForm<IFormInputs>();
   const onSubmit = async (data: IFormInputs) => {
-    const response = await axios.post(
-      "https://camp-courses.api.kreosoft.space/login",
-      data
-    );
-    localStorage.setItem("token", response.data.token);
+    const response = await accountRepository.loginUser(data);
+    localStorage.setItem("token", response.token);
   };
   return (
     <div className="flex justify-center items-center w-full h-screen">
