@@ -1,7 +1,7 @@
 import Input from "@/ui/Input";
 import { NextPage } from "next";
 import { useForm } from "react-hook-form";
-import accountRepository from "../../lib/repositories/account.repository";
+import accountRepository from "../../lib/api/repositories/account.repository";
 
 export interface IFormInputs {
   email: string;
