@@ -5,3 +5,12 @@ body {
     margin: 0;
     padding: 0;
 }
+
+.nav__link {
+    font-family: 'Montserrat';
+    text-decoration-line: none;
+}
+
+p {
+    margin: 0;
+}
