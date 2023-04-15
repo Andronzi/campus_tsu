@@ -6,13 +6,17 @@ import { useRouter } from "next/router";
 import { useForm } from "react-hook-form";
 
 export interface IFormInputs {
+  fullName: string;
+  birthDate: Date;
   email: string;
   password: string;
+  repeatPassword: string;
 }
 
 const Login: NextPage = () => {
   const {
     register,
+    watch,
     handleSubmit,
     formState: { errors },
   } = useForm<IFormInputs>();
@@ -34,18 +38,51 @@ const Login: NextPage = () => {
           onSubmit={handleSubmit(onSubmit)}
         >
           <Input
-            label="email"
+            label="ФИО"
+            name="fullName"
+            type="text"
+            register={register}
+            rules={{ required: "ФИО обязательно" }}
+            errors={errors}
+          />
+          <Input
+            label="Дата рождения"
+            name="birthDate"
+            type="date"
+            register={register}
+            rules={{ required: "Дата рождения обязательна" }}
+            errors={errors}
+          />
+          <Input
+            label="Email"
+            name="email"
             type="email"
             register={register}
             rules={{ required: "Email is required" }}
             errors={errors}
           />
           <Input
-            label="password"
+            label="Пароль"
+            name="password"
             type="password"
             register={register}
             rules={{
               required: "Password is required",
+            }}
+            errors={errors}
+          />
+          <Input
+            label="Повторите пароль"
+            name="repeatPassword"
+            type="password"
+            register={register}
+            rules={{
+              required: "Repeat password is required",
+              validate: (value: string) => {
+                if (watch("password") !== value) {
+                  return "Пароли не совпадают";
+                }
+              },
             }}
             errors={errors}
           />
@@ -55,7 +92,7 @@ const Login: NextPage = () => {
            text-white cursor-pointer hover:bg-blue-700
             hover:-translate-y-1 transition duration-300 text-md font-montserrat w-60"
           >
-            Отправить
+            Зарегистрироваться
           </button>
         </form>
       </div>
