@@ -5,10 +5,11 @@ import {
   UseFormRegister,
 } from "react-hook-form";
 
-type InputType = "email" | "text" | "password";
+type InputType = "email" | "text" | "password" | "date";
 
 type InputProps<T extends FieldValues> = {
-  label: Path<T>;
+  label: string;
+  name: Path<T>;
   type: InputType;
   errors: any;
   register?: UseFormRegister<T>;
@@ -17,6 +18,7 @@ type InputProps<T extends FieldValues> = {
 
 const Input = <T extends FieldValues>({
   label,
+  name,
   type,
   errors,
   register,
@@ -29,11 +31,11 @@ const Input = <T extends FieldValues>({
       className="mt-2 border-1 border-slate-200 rounded-md border-solid 
       text-md py-2 pl-1 text-slate-800 outline-0 focus:ring-1 
       ring-blue-300 font-montserrat w-full"
-      {...(register && register(label, rules))}
+      {...(register && register(name, rules))}
     />
-    {errors[label] && (
+    {errors[name] && (
       <p className="mt-1 mb-0 font-montserrat text-red-400">
-        {errors[label].message}
+        {errors[name].message}
       </p>
     )}
   </div>
