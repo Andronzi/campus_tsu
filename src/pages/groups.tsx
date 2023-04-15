@@ -1,29 +1,16 @@
+import GroupsList from "@/components/molecules/groups";
+import Layout from "@/components/molecules/layout/layout";
 import { NextPage } from "next";
-import { Group } from "./api/groups";
+import { Suspense } from "react";
 
-type GroupsProps = {
-  groups: Group[];
-};
-
-const Groups: NextPage<GroupsProps> = ({ groups }) => {
+const Groups: NextPage = () => {
   return (
-    <ul>
-      {groups.map((group: Group) => (
-        <li key={group.name}>{group.name}</li>
-      ))}
-    </ul>
+    <Suspense fallback={<p>Loading groups...</p>}>
+      <Layout>
+        <GroupsList />
+      </Layout>
+    </Suspense>
   );
 };
-
-export async function getStaticProps() {
-  const res = await fetch("http://localhost:3000/api/groups");
-  const groups = await res.json();
-
-  return {
-    props: {
-      groups,
-    },
-  };
-}
 
 export default Groups;
