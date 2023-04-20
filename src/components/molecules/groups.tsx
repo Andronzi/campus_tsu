@@ -1,3 +1,4 @@
+import useModal from "@/hooks/useModal";
 import {
   Group,
   useAddGroupMutation,
@@ -5,16 +6,17 @@ import {
   useGetAllGroupsQuery,
 } from "@/services/Groups/groupApi";
 import { useRouter } from "next/router";
-import { FC, useState } from "react";
+import { FC } from "react";
 import Button from "../atoms/button";
 import WithPermission from "../atoms/withPermission";
+import Modal from "./formModal";
 
 const GroupsList: FC = () => {
   const { data, error } = useGetAllGroupsQuery();
   const [addGroup] = useAddGroupMutation();
   const [deleteGroup] = useDeleteGroupMutation();
-  const [groupValue, setGroupValue] = useState("");
   const router = useRouter();
+  const { show, setShow, header, setHeader } = useModal();
 
   if (error) {
     return <p>Ошибка загрузки данных</p>;
@@ -28,12 +30,10 @@ const GroupsList: FC = () => {
           <Button
             value="Создать"
             className="mt-3 mb-3"
-            onClick={() => addGroup({ name: groupValue })}
-          />
-          <input
-            placeholder="group"
-            value={groupValue}
-            onChange={(e) => setGroupValue(e.target.value)}
+            onClick={() => {
+              setHeader("Создание группы");
+              setShow();
+            }}
           />
         </>
       </WithPermission>
@@ -54,6 +54,11 @@ const GroupsList: FC = () => {
               <div className="flex">
                 <Button
                   value="Редактировать"
+                  onClick={(e) => {
+                    setHeader("Редактирование группы");
+                    e.stopPropagation();
+                    setShow();
+                  }}
                   className="w-full bg-yellow-400 hover:bg-yellow-600"
                 />
                 <Button
@@ -69,6 +74,12 @@ const GroupsList: FC = () => {
           </li>
         ))}
       </ul>
+      <Modal
+        show={!!show}
+        header={header.toString()}
+        body="body"
+        onCloseButtonClick={() => setShow(false)}
+      />
     </div>
   );
 };
