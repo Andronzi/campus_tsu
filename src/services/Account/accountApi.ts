@@ -11,6 +11,8 @@ export type Login = {
     password: string;
 }
 
+export type Registration = Profile & Login;
+
 export type Role = "Teacher" | "Student" | "Admin";
 
 export type RolesList = {
@@ -22,6 +24,15 @@ export const accountApi = emptySplitApi.injectEndpoints({
       getUserProfile: build.query<Profile, string | void>({
         query: () => '/profile',
         providesTags: ["Profile"]
+      }),
+      registerUser: build.mutation<{token: string}, Registration>({
+        query(body: Registration) {
+          return {
+              url: '/registration',
+              method: "POST",
+              body,
+          }
+        },
       }),
       loginUser: build.mutation<{ token: string }, Login>({
         query(body: Login) {
@@ -65,4 +76,4 @@ export const accountApi = emptySplitApi.injectEndpoints({
     overrideExisting: false,
   })
   
-  export const { useGetUserProfileQuery, useLoginUserMutation, useLogoutUserMutation, useGetUserRolesQuery } = accountApi
+  export const { useGetUserProfileQuery, useRegisterUserMutation, useLoginUserMutation, useLogoutUserMutation, useGetUserRolesQuery } = accountApi

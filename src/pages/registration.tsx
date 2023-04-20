@@ -1,4 +1,4 @@
-import { useLoginUserMutation } from "@/services/Account/accountApi";
+import { useRegisterUserMutation } from "@/services/Account/accountApi";
 import Input from "@/ui/Input";
 import { NextPage } from "next";
 import { useRouter } from "next/router";
@@ -12,7 +12,7 @@ export interface IFormInputs {
   repeatPassword: string;
 }
 
-const Login: NextPage = () => {
+const Registration: NextPage = () => {
   const {
     register,
     watch,
@@ -20,10 +20,10 @@ const Login: NextPage = () => {
     formState: { errors },
   } = useForm<IFormInputs>();
   const router = useRouter();
-  const [loginUser] = useLoginUserMutation();
+  const [registerUser] = useRegisterUserMutation();
 
   const onSubmit = async (data: IFormInputs) => {
-    const response = await loginUser(data);
+    const response = await registerUser(data);
     if ("data" in response) {
       localStorage.setItem("token", response.data.token);
       router.push("/");
@@ -71,7 +71,7 @@ const Login: NextPage = () => {
         />
         <Input
           label="Подтвердите пароль"
-          name="repeatPassword"
+          name="confirmPassword"
           type="password"
           register={register}
           rules={{
@@ -97,4 +97,4 @@ const Login: NextPage = () => {
   );
 };
 
-export default Login;
+export default Registration;
