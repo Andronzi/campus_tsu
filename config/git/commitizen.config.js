@@ -3,6 +3,7 @@ module.exports = {
     { value: ":sparkles: feat", name: "✨ feat:\tAdding a new feature" },
     { value: ":bug: fix", name: "🐛 fix:\tFixing a bug" },
     { value: ":memo: docs", name: "📝 docs:\tAdd or update documentation" },
+    { value: ":tada: begin:", name: "🎉 begin: \tBegin a project" },
     {
       value: ":lipstick: style",
       name: "💄 style:\tAdd or update styles, ui or ux",
