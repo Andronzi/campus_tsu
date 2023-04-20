@@ -14,14 +14,14 @@ type Status = "Created" | "OpenForAssigning" | "Started" | "Finished";
 
 export const courcesApi = emptySplitApi.injectEndpoints({
   endpoints: (build) => ({
-    getUserCources: build.query<Course[], string>({
+    getUserCources: build.query<Course[], string | void>({
       query: () => 'courses/my',
       providesTags: ["MyCources"]
     }),
     getCourcesByGroupId: build.query<Course[], string>({
       query: (id) => `groups/${id}`,
     }),
-    getTeachingCourses: build.query<Course[], string>({
+    getTeachingCourses: build.query<Course[], string | void>({
       query: () => 'courses/teaching',
       providesTags: ["TeachingCources"]
     }),

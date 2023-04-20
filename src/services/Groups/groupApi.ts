@@ -12,7 +12,7 @@ type AddGroupModel = {
 
 export const groupsApi = emptySplitApi.injectEndpoints({
   endpoints: (build) => ({
-    getAllGroups: build.query<Group[], string>({
+    getAllGroups: build.query<Group[], string | void>({
       query: () => '/groups',
       providesTags: (result) => result ? 
       [

@@ -19,7 +19,7 @@ export type RolesList = {
 
 export const accountApi = emptySplitApi.injectEndpoints({
     endpoints: (build) => ({
-      getUserProfile: build.query<Profile, string>({
+      getUserProfile: build.query<Profile, string | void>({
         query: () => '/profile',
         providesTags: ["Profile"]
       }),
