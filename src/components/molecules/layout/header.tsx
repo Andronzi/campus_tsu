@@ -2,11 +2,11 @@ import {
   useGetUserProfileQuery,
   useLogoutUserMutation,
 } from "@/services/Account/accountApi";
-import { useGetAllGroupsQuery } from "@/services/Groups/groupApi";
 import {
   useGetTeachingCoursesQuery,
   useGetUserCourcesQuery,
-} from "@/services/courcesApi";
+} from "@/services/Course/courcesApi";
+import { useGetAllGroupsQuery } from "@/services/Groups/groupApi";
 import Link from "next/link";
 import { FC } from "react";
 
@@ -40,7 +40,7 @@ const Header: FC = () => {
           )}
           {!!cources?.length && token && (
             <Link
-              href="/cources/my"
+              href="/courses/my"
               className="nav__link text-sm ml-4 text-white"
             >
               Мои курсы
@@ -49,7 +49,7 @@ const Header: FC = () => {
           {!!teachingCources?.length && token && (
             <Link
               className="nav__link text-sm ml-4 text-white"
-              href="/cources/teaching"
+              href="/courses/teaching"
             >
               Преподаваемые курсы
             </Link>
