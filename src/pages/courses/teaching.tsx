@@ -1,16 +1,17 @@
 import CourseCard from "@/components/atoms/course-card";
-import { Course, useGetTeachingCoursesQuery } from "@/services/courcesApi";
+import { useGetTeachingCoursesQuery } from "@/services/Course/courcesApi";
+import { Course } from "@/services/Course/types";
 import { NextPage } from "next";
 import { Suspense } from "react";
 
 const Groups: NextPage = () => {
-  const cources = useGetTeachingCoursesQuery().data;
+  const courses = useGetTeachingCoursesQuery().data;
   return (
     <Suspense fallback={<p>Loading groups...</p>}>
       <div className="max-w-7xl mx-auto">
         <h2 className="font-montserrat">Ваши курсы</h2>
         <ul className="pl-0">
-          {cources?.map((course: Course) => {
+          {courses?.map((course: Course) => {
             return <CourseCard key={course.id} {...course} />;
           })}
         </ul>
