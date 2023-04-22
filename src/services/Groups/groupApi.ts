@@ -10,6 +10,11 @@ type AddGroupModel = {
     name: string;
 }
 
+type EditGroupModel = {
+    id: string;
+    name: string;
+}
+
 export const groupsApi = emptySplitApi.injectEndpoints({
   endpoints: (build) => ({
     getAllGroups: build.query<Group[], string | void>({
@@ -32,6 +37,17 @@ export const groupsApi = emptySplitApi.injectEndpoints({
         },
         invalidatesTags: [{type: 'Groups', id: "List"}],
     }),
+    updateGroup:build.mutation<Group, EditGroupModel>({
+      query(data) {
+        const { id, ...body } = data
+        return {
+          url: `groups/${id}`,
+          method: 'PUT',
+          body,
+        }
+      },
+      invalidatesTags: (result, error, { id }) => [{ type: 'Groups', id }],
+    }),
     deleteGroup: build.mutation<void, string>({
         query(id) {
             return {
@@ -45,4 +61,4 @@ export const groupsApi = emptySplitApi.injectEndpoints({
   overrideExisting: false,
 })
 
-export const { useGetAllGroupsQuery, useAddGroupMutation, useDeleteGroupMutation } = groupsApi
+export const { useGetAllGroupsQuery, useAddGroupMutation, useUpdateGroupMutation, useDeleteGroupMutation } = groupsApi
