@@ -1,4 +1,6 @@
-import { Course } from "@/services/courcesApi";
+import { statusColors, statusConvertions } from "@/pages/data/course";
+import { Course } from "@/services/Course/types";
+import router from "next/router";
 import { FC } from "react";
 
 const CourseCard: FC<Course> = (course) => {
@@ -11,22 +13,15 @@ const CourseCard: FC<Course> = (course) => {
     status,
   } = course;
 
-  const statusColors = {
-    Created: "text-emerald-500",
-    OpenForAssigning: "text-blue-400",
-    Started: "text-gray-600	",
-    Finished: "text-red-500",
-  };
-
-  const statusConvertions = {
-    Created: "Создан",
-    OpenForAssigning: "Открыт для записи",
-    Started: "В процессе обучения",
-    Finished: "Закрыт",
-  };
-
   return (
-    <div className="flex justify-between font-montserrat  border-solid border border-slate-300 p-4">
+    <div
+      className="flex justify-between font-montserrat border-solid border border-slate-300 p-4 cursor-pointer"
+      onClick={() => {
+        router.push({
+          pathname: `/courses/${course.id}`,
+        });
+      }}
+    >
       <div className="w-[80%]">
         <h2 className="mt-0 mb-0 font-medium text-xl w-[80%]">{name}</h2>
         <p className="text-md mt-2">Учебный год - {startYear}</p>
