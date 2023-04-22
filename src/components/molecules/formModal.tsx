@@ -1,5 +1,5 @@
+import Image from "next/image";
 import { FC } from "react";
-import Button from "../atoms/button";
 
 type ModalProps = {
   header: string;
@@ -8,7 +8,12 @@ type ModalProps = {
   onCloseButtonClick: () => any;
 };
 
-const Modal: FC<ModalProps> = ({ show, header, body, onCloseButtonClick }) => {
+const FormModal: FC<ModalProps> = ({
+  show,
+  header,
+  body,
+  onCloseButtonClick,
+}) => {
   if (!show) {
     return null;
   }
@@ -19,24 +24,24 @@ const Modal: FC<ModalProps> = ({ show, header, body, onCloseButtonClick }) => {
       onClick={onCloseButtonClick}
     >
       <div
-        className="modal-content bg-white p-4 rounded"
+        className="modal-content bg-white p-4 pb-6 rounded-lg w-max min-w-[20%]"
         onClick={(e) => e.stopPropagation()}
       >
-        <div className="modal-header font-montserrat font-medium text-xl">
-          {header}
-        </div>
-        <div className="modal-body font-montserrat text-md">{body}</div>
-        <div className="modal-footer flex justify-end">
-          <Button
-            className="bg-slate-400	text-white max-w-max"
-            value="Отмена"
+        <div className="modal-header relative flex">
+          <p className="font-montserrat font-medium text-xl">{header}</p>
+          <Image
+            alt="close"
+            src="http://localhost:3000/close.svg"
+            width="36"
+            height="36"
+            className="absolute top-0 -right-2 cursor-pointer"
             onClick={onCloseButtonClick}
           />
-          <Button className="text-white max-w-max ml-4" value="Отправить" />
         </div>
+        <div className="modal-body font-montserrat text-md">{body}</div>
       </div>
     </div>
   );
 };
 
-export default Modal;
+export default FormModal;
