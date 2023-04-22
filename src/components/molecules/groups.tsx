@@ -1,22 +1,23 @@
 import useModal from "@/hooks/useModal";
 import {
   Group,
-  useAddGroupMutation,
   useDeleteGroupMutation,
   useGetAllGroupsQuery,
 } from "@/services/Groups/groupApi";
 import { useRouter } from "next/router";
-import { FC } from "react";
+import { FC, useState } from "react";
 import Button from "../atoms/button";
 import WithPermission from "../atoms/withPermission";
-import Modal from "./formModal";
+import FormModal from "./formModal";
+import AddGroupForm from "./groupForm/addGroupForm";
+import EditGroupForm from "./groupForm/editGroupForm";
 
 const GroupsList: FC = () => {
   const { data, error } = useGetAllGroupsQuery();
-  const [addGroup] = useAddGroupMutation();
   const [deleteGroup] = useDeleteGroupMutation();
   const router = useRouter();
   const { show, setShow, header, setHeader } = useModal();
+  const [body, setBody] = useState() as any;
 
   if (error) {
     return <p>Ошибка загрузки данных</p>;
@@ -26,16 +27,15 @@ const GroupsList: FC = () => {
     <div className="max-w-7xl mx-auto">
       <h2 className="font-montserrat mb-0">Группы кампусных курсов</h2>
       <WithPermission roles={["Admin"]}>
-        <>
-          <Button
-            value="Создать"
-            className="mt-3 mb-3"
-            onClick={() => {
-              setHeader("Создание группы");
-              setShow();
-            }}
-          />
-        </>
+        <Button
+          value="Создать"
+          className="mt-3 mb-3"
+          onClick={() => {
+            setHeader("Создание группы");
+            setBody(<AddGroupForm />);
+            setShow();
+          }}
+        />
       </WithPermission>
       <ul className="pl-0">
         {data?.map((group: Group) => (
@@ -56,7 +56,9 @@ const GroupsList: FC = () => {
                   value="Редактировать"
                   onClick={(e) => {
                     setHeader("Редактирование группы");
+                    console.log(group.id);
                     e.stopPropagation();
+                    setBody(<EditGroupForm groupId={group.id} />);
                     setShow();
                   }}
                   className="w-full bg-yellow-400 hover:bg-yellow-600"
@@ -74,11 +76,11 @@ const GroupsList: FC = () => {
           </li>
         ))}
       </ul>
-      <Modal
-        show={!!show}
-        header={header.toString()}
-        body="body"
-        onCloseButtonClick={() => setShow(false)}
+      <FormModal
+        show={show}
+        header={header}
+        body={body}
+        onCloseButtonClick={() => setShow()}
       />
     </div>
   );
