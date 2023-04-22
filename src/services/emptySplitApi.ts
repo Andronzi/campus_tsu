@@ -12,6 +12,6 @@ export const emptySplitApi = createApi({
 
     return headers;
   } }),
-  tagTypes: ['Profile', 'Groups', 'MyCources', 'TeachingCources'],
+  tagTypes: ['Profile', 'Groups', 'Courses', 'MyCourses', 'TeachingCourses', 'CoursesDetails'],
   endpoints: () => ({}),
 })
