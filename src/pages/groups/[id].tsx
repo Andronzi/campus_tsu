@@ -4,16 +4,14 @@ import WithPermission from "@/components/atoms/withPermission";
 import AddCourseForm from "@/components/molecules/courseForm/addCourseForm";
 import FormModal from "@/components/molecules/formModal";
 import useModal from "@/hooks/useModal";
-import {
-  Course,
-  useGetCourcesByGroupIdQuery,
-} from "@/services/Course/courcesApi";
+import { useGetCourcesByGroupIdQuery } from "@/services/Course/courcesApi";
+import { Course } from "@/services/Course/types";
 import { useRouter } from "next/router";
 import { useState } from "react";
 
 export default function PostPage() {
   const router = useRouter();
-  const groupId = router.query.id;
+  const groupId = typeof router.query.id === "string" ? router.query.id : "";
   const { data } = useGetCourcesByGroupIdQuery(groupId);
   const { show, setShow, header, setHeader } = useModal();
   const [body, setBody] = useState() as any;
