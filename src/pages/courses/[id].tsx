@@ -1,14 +1,22 @@
 import Button from "@/components/atoms/button";
 import FormModal from "@/components/molecules/formModal";
 import InfoPanel from "@/components/molecules/infoPanel/infoPanel";
+
 import useModal from "@/hooks/useModal";
 import { useGetCourcesDetailsQuery } from "@/services/Course/courcesApi";
-import { Notification, Student, Teacher } from "@/services/Course/types";
 import { useRouter } from "next/router";
 import { useState } from "react";
+
 import AddNotificationForm from "./forms/addNotification";
 import AddTeacherForm from "./forms/addTeacher";
-import BasicCourseInfo from "./items/basicCourseInfo";
+
+import {
+  BasicCourseInfo,
+  CourseInfoListContainer,
+  NotificationList,
+  StudentsList,
+  TeachersList,
+} from "./items/index";
 
 const CourseDetails = () => {
   const router = useRouter();
@@ -37,7 +45,7 @@ const CourseDetails = () => {
           { Аннотация: data.annotations },
           {
             Уведомления: (
-              <ul className="m-0 p-0 border-solid border border-slate-300 rounded-b-md">
+              <CourseInfoListContainer>
                 <Button
                   className="w-max m-4"
                   onClick={() => {
@@ -47,19 +55,8 @@ const CourseDetails = () => {
                   }}
                   value="Создать уведомление"
                 />
-                {data.notifications.map(
-                  (notification: Notification, index: number) => (
-                    <li
-                      className={`flex px-3 py-2 border-x-0 border-t border-b-0 border-solid border-slate-300 ${
-                        notification.isImportant && "bg-red-500 text-white"
-                      } last:rounded-b-md`}
-                      key={index}
-                    >
-                      {notification.text}
-                    </li>
-                  )
-                )}
-              </ul>
+                <NotificationList notifications={data.notifications} />
+              </CourseInfoListContainer>
             ),
           },
         ]}
@@ -69,7 +66,7 @@ const CourseDetails = () => {
         {...[
           {
             Преподаватели: (
-              <ul className="p-0 m-0">
+              <CourseInfoListContainer>
                 <Button
                   className="w-max m-4"
                   onClick={() => {
@@ -79,38 +76,15 @@ const CourseDetails = () => {
                   }}
                   value="Добавить учителя"
                 />
-                {data.teachers.map((teacher: Teacher, index: number) => (
-                  <li
-                    className="flex px-3 py-2 border-solid border border-slate-300 -mt-px last:rounded-b-md"
-                    key={teacher.email}
-                  >
-                    <div>
-                      <p className="text-md font-semibold">{teacher.name}</p>
-                      <p className="text-sm text-gray-600">{teacher.email}</p>
-                    </div>
-                    {!!teacher.isMain && (
-                      <Button
-                        className="w-max bg-green-400 hover:bg-green-600 ml-4 py-1 px-3"
-                        value="основной"
-                      />
-                    )}
-                  </li>
-                ))}
-              </ul>
+                <TeachersList teachers={data.teachers} />
+              </CourseInfoListContainer>
             ),
           },
           {
             Студенты: (
-              <ul className="p-0 m-0 list-none">
-                {data.students.map((student: Student, index: number) => (
-                  <li
-                    className="px-3 py-2 border-solid border border-slate-300 -mt-px last:rounded-b-md"
-                    key={index}
-                  >
-                    {student.name}
-                  </li>
-                ))}
-              </ul>
+              <CourseInfoListContainer>
+                <StudentsList students={data.students} />
+              </CourseInfoListContainer>
             ),
           },
         ]}
