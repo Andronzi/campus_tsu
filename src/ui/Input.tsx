@@ -10,7 +10,7 @@ type InputType = "email" | "text" | "password" | "date" | "radio";
 type InputProps<T extends FieldValues> = {
   label?: string;
   name: Path<T>;
-  value?: string | boolean;
+  value?: string;
   type: InputType;
   errors: any;
   register?: UseFormRegister<T>;
