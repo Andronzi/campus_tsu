@@ -49,7 +49,7 @@ type CourseDetailsWithExtraFields = Course & ExcludeFromCourse & {
     notifications: Notification[],
 }
 
-export type CourseDetails = Omit<CourseDetailsWithExtraFields, "mainTeacherId">
+export type CourseDetails = Omit<CourseRequest & CourseDetailsWithExtraFields, "mainTeacherId">
 
 export type AddTeacherRequest = {
     userId: string;
