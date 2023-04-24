@@ -1,12 +1,11 @@
 import { FC, ReactNode, useState } from "react";
 
 type Props = {
-  [key: string]: ReactNode | string;
+  [key: string]: string | ReactNode;
 };
 
 const InfoPanel: FC<Array<Props>> = (props) => {
   const propsArray = Object.values(props);
-  console.log(propsArray[0]);
   // get the first header name
   const [header, setHeader] = useState(Object.keys(propsArray[0])[0]);
   return (
@@ -44,7 +43,7 @@ const InfoPanel: FC<Array<Props>> = (props) => {
                   key={1}
                   className="p-4 border-solid border border-slate-300 rounded-b-md"
                   dangerouslySetInnerHTML={{
-                    __html: Object.values(headerObj)[0],
+                    __html: Object.values(headerObj)[0]?.toString() || "", // need to change problem with string
                   }}
                 ></div>
               );
