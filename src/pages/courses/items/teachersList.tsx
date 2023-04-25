@@ -19,7 +19,7 @@ const TeachersList: FC<TeachersListProps> = ({ teachers }) => (
         </div>
         {!!teacher.isMain && (
           <Button
-            className="w-max bg-green-400 hover:bg-green-400 hover:translate-y-0 ml-4 py-1 px-3 cursor-default"
+            className="w-max bg-green-400 pointer-events-none ml-4 py-1 px-3 !cursor-default"
             value="основной"
           />
         )}
