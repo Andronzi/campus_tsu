@@ -22,7 +22,7 @@ export type CourseRequest = Omit<Course, ExcludeFromCourse> & {
 }
 
 type StudentStatus = "InQueue" | "Accepted" | "Declined";
-type StudentMarks = "NotDefined" | "Passed" | "Failed";
+export type StudentMarks = "NotDefined" | "Passed" | "Failed";
 
 export type Student = {
     id: string;

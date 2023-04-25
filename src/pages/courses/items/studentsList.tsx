@@ -1,7 +1,6 @@
+import Attestation from "@/components/atoms/attestationInfo";
 import Button from "@/components/atoms/button";
 import {
-  studentResultColors,
-  studentResultConvertions,
   studentStatusColors,
   studentStatusConvertions,
 } from "@/pages/data/student";
@@ -33,28 +32,8 @@ const StudentsList: FC<StudentsListProps> = ({ students }) => (
         </div>
         {student.status === "Accepted" && (
           <div className="flex items-center basis-3/5">
-            <div className="flex items-center basis-1/2">
-              <p className="text-sm text-blue-400 underline cursor-pointer">
-                Промежуточная аттестация
-              </p>
-              <Button
-                value={studentResultConvertions[student.midtermResult]}
-                className={`${
-                  studentResultColors[student.midtermResult]
-                } w-max ml-2 px-2 pt-2 pb-2 pointer-events-none !cursor-default !text-xs`}
-              />
-            </div>
-            <div className="ml-6 flex items-center basis-1/2">
-              <p className="text-sm text-blue-400 underline cursor-pointer">
-                Финальная аттестация
-              </p>
-              <Button
-                value={studentResultConvertions[student.midtermResult]}
-                className={`${
-                  studentResultColors[student.midtermResult]
-                } w-max ml-2 px-2 pt-2 pb-2 pointer-events-none !cursor-default !text-xs`}
-              />
-            </div>
+            <Attestation result={student.midtermResult} />
+            <Attestation result={student.finalResult} />
           </div>
         )}
         {student.status === "InQueue" && (
