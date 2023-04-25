@@ -15,7 +15,8 @@ const CourseCard: FC<Course> = (course) => {
 
   return (
     <div
-      className="flex justify-between font-montserrat border-solid border border-slate-300 p-4 cursor-pointer"
+      className="flex justify-between font-montserrat border-solid border border-slate-300 p-4 
+                  cursor-pointer -mt-px first:rounded-t-md first:mt-0 last:rounded-b-md"
       onClick={() => {
         router.push({
           pathname: `/courses/${course.id}`,

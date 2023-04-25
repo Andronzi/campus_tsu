@@ -40,7 +40,8 @@ const GroupsList: FC = () => {
       <ul className="pl-0">
         {data?.map((group: Group) => (
           <li
-            className="flex justify-between list-none border-solid border border-slate-300 p-4 font-montserrat cursor-pointer"
+            className="flex justify-between list-none border-solid border border-slate-300 
+                      p-4 font-montserrat cursor-pointer -mt-px first:rounded-t-md first:mt-0 last:rounded-b-md"
             key={group.name}
             onClick={() =>
               router.push({
