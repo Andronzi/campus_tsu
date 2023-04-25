@@ -1,4 +1,4 @@
-type Status = "Created" | "OpenForAssigning" | "Started" | "Finished";
+type CourseStatus = "Created" | "OpenForAssigning" | "Started" | "Finished";
 
 type Semester = "Spring" | "Autumn"
 
@@ -8,7 +8,7 @@ export type Course = {
     startYear: number;
     maximumStudentsCount: number;
     remainingSlotsCount: number;
-    status: Status;
+    status: CourseStatus;
     semester: Semester;
   }
   
@@ -21,13 +21,16 @@ export type CourseRequest = Omit<Course, ExcludeFromCourse> & {
     mainTeacherId: string 
 }
 
+type StudentStatus = "InQueue" | "Accepted" | "Declined";
+type StudentMarks = "NotDefined" | "Passed" | "Failed";
+
 export type Student = {
     id: string;
     name: string;
     email: string;
-    status: string;
-    midtermResult: string;
-    finalResult: string;
+    status: StudentStatus;
+    midtermResult: StudentMarks;
+    finalResult: StudentMarks;
 }
 
 export type Teacher = {
