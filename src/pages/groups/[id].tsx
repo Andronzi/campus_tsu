@@ -15,6 +15,7 @@ export default function PostPage() {
   const { data } = useGetCourcesByGroupIdQuery(groupId);
   const { show, setShow, header, setHeader } = useModal();
   const [body, setBody] = useState() as any;
+  
   return (
     <div className="max-w-7xl mx-auto">
       <WithPermission roles={["Admin"]}>
