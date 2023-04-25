@@ -17,7 +17,7 @@ const BasicCourseInfo: FC<CourseDetails> = (data) => (
           {statusConvertions[data.status]}
         </p>
       </div>
-      <WithPermission roles={["Admin"]}>
+      <WithPermission roles={["Admin", "Teacher"]}>
         <Button className="w-max bg-yellow-400" value="Изменить" />
       </WithPermission>
     </li>
