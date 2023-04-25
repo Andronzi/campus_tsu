@@ -18,7 +18,10 @@ const BasicCourseInfo: FC<CourseDetails> = (data) => (
         </p>
       </div>
       <WithPermission roles={["Admin", "Teacher"]}>
-        <Button className="w-max bg-yellow-400" value="Изменить" />
+        <Button
+          className="w-max bg-yellow-400 hover:bg-yellow-600"
+          value="Изменить"
+        />
       </WithPermission>
     </li>
     <li className="-mt-px flex items-center p-4 border-solid border border-slate-300">

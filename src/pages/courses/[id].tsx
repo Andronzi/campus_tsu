@@ -10,6 +10,7 @@ import { useState } from "react";
 import AddNotificationForm from "./forms/addNotification";
 import AddTeacherForm from "./forms/addTeacher";
 
+import WithPermission from "@/components/atoms/withPermission";
 import {
   BasicCourseInfo,
   CourseInfoListContainer,
@@ -37,7 +38,15 @@ const CourseDetails = () => {
   return (
     <div className="max-w-7xl mx-auto font-montserrat mb-4">
       <h2 className="text-3xl">{data.name}</h2>
-      <p className="text-xl font-medium">Основные данные курса</p>
+      <div className="flex justify-between">
+        <p className="text-xl font-medium">Основные данные курса</p>
+        <WithPermission roles={["Teacher", "Admin"]}>
+          <Button
+            value="Редактировать"
+            className="w-max bg-yellow-400 hover:bg-yellow-600"
+          />
+        </WithPermission>
+      </div>
       <BasicCourseInfo {...data} />
       <InfoPanel
         {...[
