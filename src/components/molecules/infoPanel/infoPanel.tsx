@@ -38,7 +38,7 @@ const InfoPanel: FC<Array<Props>> = (props) => {
                   key === header && "font-semibold text-gray-600"
                 } ${
                   key == "Уведомления" &&
-                  `after:content-[attr(after-dynamic-value)] after:absolute after:top-2 after:ml-0.5 after:w-10 after:h-10 after:leading-5 after:text-xs after:rounded-full after:text-center after:bg-red-400 after:text-white`
+                  `after:content-[attr(after-dynamic-value)] after:font-bold after:absolute after:top-2 after:ml-0.5 after:w-6 after:h-6 after:leading-6 after:text-xs after:rounded-full after:text-center after:bg-red-400 after:text-white`
                 }`}
               >
                 {key}
