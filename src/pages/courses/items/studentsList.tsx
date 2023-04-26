@@ -39,15 +39,17 @@ const StudentsList: FC<StudentsListProps> = ({ courseId, students }) => {
           </div>
           {student.status === "Accepted" && (
             <div className="flex items-center basis-3/5">
-              <WithPermission roles={["Teacher", "Admin"]}>
-                <>
-                  <Attestation
-                    type="Промежуточная"
-                    result={student.midtermResult}
-                  />
-                  <Attestation type="Итоговая" result={student.finalResult} />
-                </>
-              </WithPermission>
+              {userEmail !== student.email && (
+                <WithPermission roles={["Teacher", "Admin"]}>
+                  <>
+                    <Attestation
+                      type="Промежуточная"
+                      result={student.midtermResult}
+                    />
+                    <Attestation type="Итоговая" result={student.finalResult} />
+                  </>
+                </WithPermission>
+              )}
 
               {userEmail === student.email && (
                 <>
