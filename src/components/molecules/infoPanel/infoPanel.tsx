@@ -13,17 +13,32 @@ const InfoPanel: FC<Array<Props>> = (props) => {
       <ul className="flex mb-0 mt-4 pl-0">
         {propsArray.map((headerObj, index) => {
           const key = Object.keys(headerObj)[0];
+          let notificationsCount = "";
+          if (key === "Уведомления") {
+            const length =
+              Object.values(headerObj)[0].props?.children[1]?.props
+                ?.notifications?.length;
+
+            length > 3
+              ? (notificationsCount = "3+")
+              : (notificationsCount = length);
+          }
+
           return (
             <li
-              className={`w-full flex p-4 border-solid border border-slate-300 cursor-pointer ${
+              className={`relative w-full flex p-4 border-solid border border-slate-300 cursor-pointer ${
                 key === header && "bg-slate-100	"
               } first:rounded-tl-md last:rounded-tr-md`}
               key={index}
               onClick={() => setHeader(key)}
             >
               <p
+                after-dynamic-value={notificationsCount}
                 className={`grow text-center ${
                   key === header && "font-semibold text-gray-600"
+                } ${
+                  key == "Уведомления" &&
+                  `after:content-[attr(after-dynamic-value)] after:absolute after:top-2 after:ml-0.5 after:w-10 after:h-10 after:leading-5 after:text-xs after:rounded-full after:text-center after:bg-red-400 after:text-white`
                 }`}
               >
                 {key}
