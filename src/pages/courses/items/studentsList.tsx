@@ -5,18 +5,27 @@ import {
   studentStatusColors,
   studentStatusConvertions,
 } from "@/pages/data/student";
-import { useGetUserProfileQuery } from "@/services/Account/accountApi";
+import {
+  useGetUserProfileQuery,
+  useGetUserRolesQuery,
+} from "@/services/Account/accountApi";
 import { useEditStudentStatusMutation } from "@/services/Course/courcesApi";
-import { Student } from "@/services/Course/types";
+import { Student, Teacher } from "@/services/Course/types";
 import { FC } from "react";
 
 type StudentsListProps = {
   courseId: string;
   students: Student[];
+  teachers: Teacher[];
 };
 
-const StudentsList: FC<StudentsListProps> = ({ courseId, students }) => {
+const StudentsList: FC<StudentsListProps> = ({
+  courseId,
+  students,
+  teachers,
+}) => {
   const userEmail = useGetUserProfileQuery().data?.email;
+  const isAdmin = useGetUserRolesQuery().data?.isAdmin;
   const [editStudentStatus] = useEditStudentStatusMutation();
   return (
     <>
@@ -39,8 +48,10 @@ const StudentsList: FC<StudentsListProps> = ({ courseId, students }) => {
           </div>
           {student.status === "Accepted" && (
             <div className="flex items-center basis-3/5">
-              {userEmail !== student.email && (
-                <WithPermission roles={["Teacher", "Admin"]}>
+              {!teachers.filter(
+                (teacher: Teacher) => teacher.email === userEmail
+              ).length &&
+                isAdmin && (
                   <>
                     <Attestation
                       type="Промежуточная"
@@ -48,10 +59,21 @@ const StudentsList: FC<StudentsListProps> = ({ courseId, students }) => {
                     />
                     <Attestation type="Итоговая" result={student.finalResult} />
                   </>
-                </WithPermission>
+                )}
+
+              {!!teachers.filter(
+                (teacher: Teacher) => teacher.email === userEmail
+              ).length && (
+                <>
+                  <Attestation
+                    type="Промежуточная"
+                    result={student.midtermResult}
+                  />
+                  <Attestation type="Итоговая" result={student.finalResult} />
+                </>
               )}
 
-              {userEmail === student.email && (
+              {userEmail === student.email && !isAdmin && (
                 <>
                   <Attestation
                     type="Промежуточная"

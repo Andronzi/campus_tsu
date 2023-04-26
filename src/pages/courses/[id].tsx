@@ -47,39 +47,41 @@ const CourseDetails = () => {
       <h2 className="text-3xl">{data.name}</h2>
       <div className="flex justify-between">
         <p className="text-xl font-medium">Основные данные курса</p>
-        <WithPermission roles={["Admin"]}>
-          <Button
-            value="Редактировать"
-            className="w-max bg-yellow-400 hover:bg-yellow-600"
-          />
-        </WithPermission>
-        {!!data.teachers.filter(
-          (teacher: Teacher) => teacher.email === userEmail
-        ).length ? (
-          <Button
-            value="Редактировать"
-            className="w-max bg-yellow-400 hover:bg-yellow-600"
-          />
-        ) : (
-          <WithPermission roles={["Teacher"]}>
+        <div className="flex">
+          {!data.teachers.filter(
+            (teacher: Teacher) => teacher.email === userEmail
+          ).length && (
+            <WithPermission roles={["Admin"]}>
+              <Button
+                value="Редактировать"
+                className="w-max bg-yellow-400 hover:bg-yellow-600"
+              />
+            </WithPermission>
+          )}
+          {!!data.teachers.filter(
+            (teacher: Teacher) => teacher.email === userEmail
+          ).length && (
             <Button
-              value="Записаться на курс"
-              className="w-max bg-green-400 hover:bg-green-600"
+              value="Редактировать"
+              className="w-max bg-yellow-400 hover:bg-yellow-600"
             />
-          </WithPermission>
-        )}
+          )}
 
-        {!!data.students.filter(
-          (student: Student) => student.email === userEmail
-        ).length ? null : (
-          <Button
-            value="Записаться на курс"
-            onClick={() => {
-              addUser(courseId);
-            }}
-            className="w-max bg-green-400 hover:bg-green-600"
-          />
-        )}
+          {!data.students.filter(
+            (student: Student) => student.email === userEmail
+          ).length &&
+            !data.teachers.filter(
+              (teacher: Teacher) => teacher.email === userEmail
+            ).length && (
+              <Button
+                value="Записаться на курс"
+                onClick={() => {
+                  addUser(courseId);
+                }}
+                className="w-max bg-green-400 hover:bg-green-600 ml-4"
+              />
+            )}
+        </div>
       </div>
       <BasicCourseInfo {...data} />
       <InfoPanel
@@ -110,15 +112,31 @@ const CourseDetails = () => {
           {
             Преподаватели: (
               <CourseInfoListContainer>
-                <Button
-                  className="w-max m-4"
-                  onClick={() => {
-                    setHeader("Добавить учителя");
-                    setBody(<AddTeacherForm courseId={data.id} />);
-                    setShow();
-                  }}
-                  value="Добавить учителя"
-                />
+                {data.teachers.filter(
+                  (teacher) => teacher.isMain && teacher.email === userEmail
+                ).length ? (
+                  <Button
+                    className="w-max m-4"
+                    onClick={() => {
+                      setHeader("Добавить учителя");
+                      setBody(<AddTeacherForm courseId={data.id} />);
+                      setShow();
+                    }}
+                    value="Добавить учителя"
+                  />
+                ) : (
+                  <WithPermission roles={["Admin"]}>
+                    <Button
+                      className="w-max m-4"
+                      onClick={() => {
+                        setHeader("Добавить учителя");
+                        setBody(<AddTeacherForm courseId={data.id} />);
+                        setShow();
+                      }}
+                      value="Добавить учителя"
+                    />
+                  </WithPermission>
+                )}
                 <TeachersList teachers={data.teachers} />
               </CourseInfoListContainer>
             ),
@@ -126,7 +144,11 @@ const CourseDetails = () => {
           {
             Студенты: (
               <CourseInfoListContainer>
-                <StudentsList courseId={courseId} students={data.students} />
+                <StudentsList
+                  courseId={courseId}
+                  students={data.students}
+                  teachers={data.teachers}
+                />
               </CourseInfoListContainer>
             ),
           },
