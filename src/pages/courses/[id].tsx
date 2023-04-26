@@ -11,6 +11,8 @@ import AddNotificationForm from "./forms/addNotification";
 import AddTeacherForm from "./forms/addTeacher";
 
 import WithPermission from "@/components/atoms/withPermission";
+import { useGetUserProfileQuery } from "@/services/Account/accountApi";
+import { Student, Teacher } from "@/services/Course/types";
 import {
   BasicCourseInfo,
   CourseInfoListContainer,
@@ -26,6 +28,7 @@ const CourseDetails = () => {
   const [body, setBody] = useState() as any;
 
   const { data, isLoading, error } = useGetCourcesDetailsQuery(courseId);
+  const userEmail = useGetUserProfileQuery().data?.email;
 
   if (isLoading) {
     return <p>Загрузка данных</p>;
@@ -40,12 +43,36 @@ const CourseDetails = () => {
       <h2 className="text-3xl">{data.name}</h2>
       <div className="flex justify-between">
         <p className="text-xl font-medium">Основные данные курса</p>
-        <WithPermission roles={["Teacher", "Admin"]}>
+        <WithPermission roles={["Admin"]}>
           <Button
             value="Редактировать"
             className="w-max bg-yellow-400 hover:bg-yellow-600"
           />
         </WithPermission>
+        {!!data.teachers.filter(
+          (teacher: Teacher) => teacher.email === userEmail
+        ).length ? (
+          <Button
+            value="Редактировать"
+            className="w-max bg-yellow-400 hover:bg-yellow-600"
+          />
+        ) : (
+          <WithPermission roles={["Teacher"]}>
+            <Button
+              value="Записаться на курс"
+              className="w-max bg-green-400 hover:bg-green-600"
+            />
+          </WithPermission>
+        )}
+
+        {!!data.students.filter(
+          (student: Student) => student.email === userEmail
+        ).length ? null : (
+          <Button
+            value="Записаться на курс"
+            className="w-max bg-green-400 hover:bg-green-600"
+          />
+        )}
       </div>
       <BasicCourseInfo {...data} />
       <InfoPanel
