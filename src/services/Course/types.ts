@@ -21,7 +21,7 @@ export type CourseRequest = Omit<Course, ExcludeFromCourse> & {
     mainTeacherId: string 
 }
 
-type StudentStatus = "InQueue" | "Accepted" | "Declined";
+export type StudentStatus = "InQueue" | "Accepted" | "Declined";
 export type StudentMarks = "NotDefined" | "Passed" | "Failed";
 
 export type Student = {

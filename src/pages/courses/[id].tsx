@@ -3,7 +3,10 @@ import FormModal from "@/components/molecules/formModal";
 import InfoPanel from "@/components/molecules/infoPanel/infoPanel";
 
 import useModal from "@/hooks/useModal";
-import { useGetCourcesDetailsQuery } from "@/services/Course/courcesApi";
+import {
+  useAddUserToCourseMutation,
+  useGetCourcesDetailsQuery,
+} from "@/services/Course/courcesApi";
 import { useRouter } from "next/router";
 import { useState } from "react";
 
@@ -29,6 +32,7 @@ const CourseDetails = () => {
 
   const { data, isLoading, error } = useGetCourcesDetailsQuery(courseId);
   const userEmail = useGetUserProfileQuery().data?.email;
+  const [addUser] = useAddUserToCourseMutation();
 
   if (isLoading) {
     return <p>Загрузка данных</p>;
@@ -70,6 +74,9 @@ const CourseDetails = () => {
         ).length ? null : (
           <Button
             value="Записаться на курс"
+            onClick={() => {
+              addUser(courseId);
+            }}
             className="w-max bg-green-400 hover:bg-green-600"
           />
         )}
@@ -119,7 +126,7 @@ const CourseDetails = () => {
           {
             Студенты: (
               <CourseInfoListContainer>
-                <StudentsList students={data.students} />
+                <StudentsList courseId={courseId} students={data.students} />
               </CourseInfoListContainer>
             ),
           },

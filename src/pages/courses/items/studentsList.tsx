@@ -6,15 +6,18 @@ import {
   studentStatusConvertions,
 } from "@/pages/data/student";
 import { useGetUserProfileQuery } from "@/services/Account/accountApi";
+import { useEditStudentStatusMutation } from "@/services/Course/courcesApi";
 import { Student } from "@/services/Course/types";
 import { FC } from "react";
 
 type StudentsListProps = {
+  courseId: string;
   students: Student[];
 };
 
-const StudentsList: FC<StudentsListProps> = ({ students }) => {
+const StudentsList: FC<StudentsListProps> = ({ courseId, students }) => {
   const userEmail = useGetUserProfileQuery().data?.email;
+  const [editStudentStatus] = useEditStudentStatusMutation();
   return (
     <>
       {students.map((student: Student) => (
@@ -60,10 +63,27 @@ const StudentsList: FC<StudentsListProps> = ({ students }) => {
           {student.status === "InQueue" && (
             <WithPermission roles={["Admin", "Teacher"]}>
               <div>
-                <Button value="Принять" className="w-max" />
+                <Button
+                  value="Принять"
+                  className="w-max"
+                  onClick={() => {
+                    editStudentStatus({
+                      courseId: courseId,
+                      status: "Accepted",
+                      studentId: student.id,
+                    });
+                  }}
+                />
                 <Button
                   value="Отклонить заявку"
                   className="w-max bg-red-400 hover:bg-red-600 ml-2"
+                  onClick={() => {
+                    editStudentStatus({
+                      courseId: courseId,
+                      status: "Declined",
+                      studentId: student.id,
+                    });
+                  }}
                 />
               </div>
             </WithPermission>
