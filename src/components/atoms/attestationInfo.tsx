@@ -7,13 +7,14 @@ import { FC } from "react";
 import Button from "./button";
 
 type AttestationProps = {
+  type: string;
   result: StudentMarks;
 };
 
-const Attestation: FC<AttestationProps> = ({ result }) => (
+const Attestation: FC<AttestationProps> = ({ type, result }) => (
   <div className="flex items-center basis-1/2">
     <p className="text-sm text-blue-400 underline cursor-pointer">
-      Промежуточная аттестация
+      {type} аттестация
     </p>
     <Button
       value={studentResultConvertions[result]}
