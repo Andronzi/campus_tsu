@@ -1,4 +1,4 @@
-type CourseStatus = "Created" | "OpenForAssigning" | "Started" | "Finished";
+export type CourseStatus = "Created" | "OpenForAssigning" | "Started" | "Finished";
 
 type Semester = "Spring" | "Autumn"
 
@@ -62,3 +62,8 @@ export type AddTeacherRequest = {
 export type AddNotification = {
     courseId: string;
 } & Notification;
+
+export type EditCourseStatus = {
+    courseId: string;
+    status: CourseStatus
+}

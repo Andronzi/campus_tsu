@@ -1,5 +1,5 @@
 import { emptySplitApi } from '../emptySplitApi';
-import { AddNotification, AddTeacherRequest, Course, CourseDetails, CourseRequest, StudentStatus } from './types';
+import { AddNotification, AddTeacherRequest, Course, CourseDetails, CourseRequest, EditCourseStatus, StudentStatus } from './types';
 
 export const courcesApi = emptySplitApi.injectEndpoints({
   endpoints: (build) => ({
@@ -69,8 +69,19 @@ export const courcesApi = emptySplitApi.injectEndpoints({
     },
     invalidatesTags: ["CoursesDetails"]
     }),
+    editCourseStatus: build.mutation<void, EditCourseStatus>({
+      query(data) {
+        const { courseId, ...body } = data;
+        return {
+          url: `/courses/${courseId}/status`,
+          method: "POST",
+          body,
+        }
+      },
+      invalidatesTags: ["CoursesDetails"]
+    })
   }),
   overrideExisting: false,
 })
 
-export const { useGetUserCourcesQuery, useGetCourcesByGroupIdQuery, useGetTeachingCoursesQuery, useAddCourseMutation, useAddUserToCourseMutation, useAddNotificationMutation, useAddteacherMutation, useGetCourcesDetailsQuery, useEditStudentStatusMutation } = courcesApi
+export const { useGetUserCourcesQuery, useGetCourcesByGroupIdQuery, useGetTeachingCoursesQuery, useAddCourseMutation, useAddUserToCourseMutation, useAddNotificationMutation, useAddteacherMutation, useGetCourcesDetailsQuery, useEditStudentStatusMutation, useEditCourseStatusMutation } = courcesApi

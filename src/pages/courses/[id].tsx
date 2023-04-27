@@ -84,7 +84,12 @@ const CourseDetails = () => {
             )}
         </div>
       </div>
-      <BasicCourseInfo {...data} />
+      <BasicCourseInfo
+        data={data}
+        setHeader={setHeader}
+        setBody={setBody}
+        setShow={setShow}
+      />
       <InfoPanel
         {...[
           { "Требования к курсу": data.requirements },

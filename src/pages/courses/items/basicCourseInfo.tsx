@@ -7,8 +7,21 @@ import {
 } from "@/pages/data/course";
 import { CourseDetails } from "@/services/Course/types";
 import { FC } from "react";
+import ChangeCourseStatusForm from "../forms/changeStatus";
 
-const BasicCourseInfo: FC<CourseDetails> = (data) => (
+type BasicCourseInfoProps = {
+  data: CourseDetails;
+  setHeader: Function;
+  setBody: Function;
+  setShow: Function;
+};
+
+const BasicCourseInfo: FC<BasicCourseInfoProps> = ({
+  data,
+  setHeader,
+  setBody,
+  setShow,
+}) => (
   <ul className="mt-2 list-none pl-0">
     <li className="flex justify-between items-center p-4 border-solid border border-slate-300 rounded-t-md">
       <div>
@@ -21,6 +34,11 @@ const BasicCourseInfo: FC<CourseDetails> = (data) => (
         <Button
           className="w-max bg-yellow-400 hover:bg-yellow-600"
           value="Изменить"
+          onClick={() => {
+            setHeader("Изменить статус");
+            setBody(<ChangeCourseStatusForm courseId={data.id} />);
+            setShow();
+          }}
         />
       </WithPermission>
     </li>
