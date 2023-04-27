@@ -72,7 +72,8 @@ const CourseDetails = () => {
           ).length &&
             !data.teachers.filter(
               (teacher: Teacher) => teacher.email === userEmail
-            ).length && (
+            ).length &&
+            data.status === "OpenForAssigning" && (
               <Button
                 value="Записаться на курс"
                 onClick={() => {
