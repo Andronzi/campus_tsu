@@ -24,7 +24,7 @@ const FormModal: FC<ModalProps> = ({
       onClick={onCloseButtonClick}
     >
       <div
-        className="modal-content bg-white p-4 pb-6 rounded-lg w-max min-w-[20%]"
+        className="modal-content bg-white p-4 pb-6 rounded-lg w-max min-w-[20%] max-h-[90%] overflow-y-auto"
         onClick={(e) => e.stopPropagation()}
       >
         <div className="modal-header relative flex">

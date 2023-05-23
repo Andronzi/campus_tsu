@@ -1,10 +1,7 @@
 import Attestation from "@/components/atoms/attestationInfo";
 import Button from "@/components/atoms/button";
 import WithPermission from "@/components/atoms/withPermission";
-import {
-  studentStatusColors,
-  studentStatusConvertions,
-} from "@/pages/data/student";
+import { studentStatusColors, studentStatusConvertions } from "@/data/student";
 import {
   useGetUserProfileQuery,
   useGetUserRolesQuery,
@@ -14,12 +11,18 @@ import { Student, Teacher } from "@/services/Course/types";
 import { FC } from "react";
 
 type StudentsListProps = {
+  setHeader: Function;
+  setBody: Function;
+  setShow: Function;
   courseId: string;
   students: Student[];
   teachers: Teacher[];
 };
 
 const StudentsList: FC<StudentsListProps> = ({
+  setHeader,
+  setBody,
+  setShow,
   courseId,
   students,
   teachers,
@@ -54,10 +57,23 @@ const StudentsList: FC<StudentsListProps> = ({
                 isAdmin && (
                   <>
                     <Attestation
+                      setHeader={setHeader}
+                      setBody={setBody}
+                      setShow={setShow}
+                      courseId={courseId}
+                      studentId={student.id}
                       type="Промежуточная"
                       result={student.midtermResult}
                     />
-                    <Attestation type="Итоговая" result={student.finalResult} />
+                    <Attestation
+                      setHeader={setHeader}
+                      setBody={setBody}
+                      setShow={setShow}
+                      courseId={courseId}
+                      studentId={student.id}
+                      type="Итоговая"
+                      result={student.finalResult}
+                    />
                   </>
                 )}
 
@@ -66,20 +82,46 @@ const StudentsList: FC<StudentsListProps> = ({
               ).length && (
                 <>
                   <Attestation
+                    setHeader={setHeader}
+                    setBody={setBody}
+                    setShow={setShow}
+                    courseId={courseId}
+                    studentId={student.id}
                     type="Промежуточная"
                     result={student.midtermResult}
                   />
-                  <Attestation type="Итоговая" result={student.finalResult} />
+                  <Attestation
+                    setHeader={setHeader}
+                    setBody={setBody}
+                    setShow={setShow}
+                    courseId={courseId}
+                    studentId={student.id}
+                    type="Итоговая"
+                    result={student.finalResult}
+                  />
                 </>
               )}
 
               {userEmail === student.email && !isAdmin && (
                 <>
                   <Attestation
+                    setHeader={setHeader}
+                    setBody={setBody}
+                    setShow={setShow}
+                    courseId={courseId}
+                    studentId={student.id}
                     type="Промежуточная"
                     result={student.midtermResult}
                   />
-                  <Attestation type="Итоговая" result={student.finalResult} />
+                  <Attestation
+                    setHeader={setHeader}
+                    setBody={setBody}
+                    setShow={setShow}
+                    courseId={courseId}
+                    studentId={student.id}
+                    type="Итоговая"
+                    result={student.finalResult}
+                  />
                 </>
               )}
             </div>

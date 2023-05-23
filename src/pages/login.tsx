@@ -1,31 +1,32 @@
 import { useLoginUserMutation } from "@/services/Account/accountApi";
+import { Login } from "@/services/Account/models";
 import Input from "@/ui/Input";
 import { NextPage } from "next";
 import { useRouter } from "next/router";
 import { useForm } from "react-hook-form";
-
-export interface IFormInputs {
-  email: string;
-  password: string;
-}
+import { toast } from "react-hot-toast";
 
 const Login: NextPage = () => {
   const {
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm<IFormInputs>();
+  } = useForm<Login>();
   const router = useRouter();
   const [loginUser] = useLoginUserMutation();
 
-  const onSubmit = async (data: IFormInputs) => {
-    const response = await loginUser(data);
-    if ("data" in response) {
+  const onSubmit = async (data: Login) => {
+    try {
+      await loginUser(data).unwrap();
+      toast.success("The login was successful");
       router.push("/");
+    } catch (err) {
+      toast.error("The login wasn't successful");
     }
   };
   return (
-    <div className="flex justify-center items-center w-full h-screen">
+    <div className="flex flex-col items-center w-full h-full mt-8">
+      <p className="text-4xl">Аутентификация</p>
       <form
         className="w-full flex flex-col items-center"
         onSubmit={handleSubmit(onSubmit)}

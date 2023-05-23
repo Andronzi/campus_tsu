@@ -1,4 +1,4 @@
-import { statusColors, statusConvertions } from "@/pages/data/course";
+import { statusColors, statusConvertions } from "@/data/course";
 import { Course } from "@/services/Course/types";
 import router from "next/router";
 import { FC } from "react";

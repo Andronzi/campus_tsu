@@ -15,7 +15,7 @@ const InfoPanel: FC<Array<Props>> = (props) => {
           const key = Object.keys(headerObj)[0];
           let notificationsCount = "";
           if (key === "Уведомления") {
-            const length =
+            const length = // @ts-ignore
               Object.values(headerObj)[0].props?.children[1]?.props
                 ?.notifications?.length;
 

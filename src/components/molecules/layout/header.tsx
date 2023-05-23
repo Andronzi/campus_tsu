@@ -9,21 +9,26 @@ import {
 import { useGetAllGroupsQuery } from "@/services/Groups/groupApi";
 import Link from "next/link";
 import { FC } from "react";
+import { toast } from "react-hot-toast";
 
 const Header: FC = () => {
   let token = "";
   if (typeof window !== "undefined") {
     token = localStorage.getItem("token") || "";
   }
-
   const groups = useGetAllGroupsQuery(token).data;
   const cources = useGetUserCourcesQuery(token).data;
   const teachingCources = useGetTeachingCoursesQuery(token).data;
   const profile = useGetUserProfileQuery(token).data;
   const [logoutUser] = useLogoutUserMutation();
 
-  const handleExitButton = () => {
-    logoutUser();
+  const handleExitButton = async () => {
+    try {
+      await logoutUser().unwrap();
+      toast.success("Вы успешно вышли из системы");
+    } catch (err) {
+      toast.error("Не удалось выйти из системы");
+    }
   };
 
   return (
@@ -58,9 +63,14 @@ const Header: FC = () => {
         <div className="flex">
           {profile && token ? (
             <>
-              <p className="text-sm text-white font-montserrat">
-                {profile.email}
-              </p>
+              <Link
+                className="nav__link text-sm ml-4 text-white"
+                href="/profile"
+              >
+                <p className="text-sm text-white font-montserrat cursor-pointer">
+                  {profile.email}
+                </p>
+              </Link>
               <button
                 onClick={handleExitButton}
                 className="bg-transparent border-none text-white 

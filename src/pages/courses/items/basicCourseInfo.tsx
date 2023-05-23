@@ -4,7 +4,7 @@ import {
   semesterConvertions,
   statusColors,
   statusConvertions,
-} from "@/pages/data/course";
+} from "@/data/course";
 import { CourseDetails } from "@/services/Course/types";
 import { FC } from "react";
 import ChangeCourseStatusForm from "../forms/changeStatus";

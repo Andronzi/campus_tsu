@@ -6,6 +6,7 @@ import {
 } from "@/services/Groups/groupApi";
 import { useRouter } from "next/router";
 import { FC, useState } from "react";
+import { toast } from "react-hot-toast";
 import Button from "../atoms/button";
 import WithPermission from "../atoms/withPermission";
 import FormModal from "./formModal";
@@ -22,6 +23,15 @@ const GroupsList: FC = () => {
   if (error) {
     return <p>Ошибка загрузки данных</p>;
   }
+
+  const handleDeleteButton = async (id: string) => {
+    try {
+      await deleteGroup(id).unwrap();
+      toast.success("Группа успешно удалена");
+    } catch (err) {
+      toast.error("Не удалось удалить группу");
+    }
+  };
 
   return (
     <div className="max-w-7xl mx-auto">
@@ -67,7 +77,7 @@ const GroupsList: FC = () => {
                 <Button
                   value="Удалить"
                   onClick={(e) => {
-                    deleteGroup(group.id);
+                    handleDeleteButton(group.id);
                     e.stopPropagation();
                   }}
                   className="ml-4 w-full bg-red-500 hover:bg-red-700"

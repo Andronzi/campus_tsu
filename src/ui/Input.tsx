@@ -10,17 +10,19 @@ type InputType = "email" | "text" | "password" | "date" | "radio";
 type InputProps<T extends FieldValues> = {
   label?: string;
   name: Path<T>;
+  disabled?: boolean;
   value?: string;
   type: InputType;
   errors: any;
   register?: UseFormRegister<T>;
   rules?: RegisterOptions;
-  className: string;
+  className?: string;
 };
 
 const Input = <T extends FieldValues>({
   label,
   name,
+  disabled,
   value,
   type,
   errors,
@@ -37,6 +39,7 @@ const Input = <T extends FieldValues>({
     >
       <p>{label}</p>
       <input
+        disabled={disabled}
         id={name}
         value={value}
         type={type}
@@ -49,7 +52,7 @@ const Input = <T extends FieldValues>({
       />
     </label>
     {errors[name] && (
-      <p className="mt-1 mb-0 font-montserrat text-red-400">
+      <p className="w-60 mt-1 mb-0 font-montserrat text-red-400">
         {errors[name].message}
       </p>
     )}

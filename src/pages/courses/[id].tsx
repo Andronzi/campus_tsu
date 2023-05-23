@@ -16,13 +16,12 @@ import AddTeacherForm from "./forms/addTeacher";
 import WithPermission from "@/components/atoms/withPermission";
 import { useGetUserProfileQuery } from "@/services/Account/accountApi";
 import { Student, Teacher } from "@/services/Course/types";
-import {
-  BasicCourseInfo,
-  CourseInfoListContainer,
-  NotificationList,
-  StudentsList,
-  TeachersList,
-} from "./items/index";
+import EditCourseDetails from "./forms/editCourseDetails";
+import BasicCourseInfo from "./items/basicCourseInfo";
+import CourseInfoListContainer from "./items/courseInfoList";
+import NotificationList from "./items/notificationList";
+import StudentsList from "./items/studentsList";
+import TeachersList from "./items/teachersList";
 
 const CourseDetails = () => {
   const router = useRouter();
@@ -33,6 +32,23 @@ const CourseDetails = () => {
   const { data, isLoading, error } = useGetCourcesDetailsQuery(courseId);
   const userEmail = useGetUserProfileQuery().data?.email;
   const [addUser] = useAddUserToCourseMutation();
+
+  const provideFormData = (header: string, body: any) => {
+    setHeader(header);
+    setBody(body);
+    setShow();
+  };
+
+  const handleEditButtonClick = () => {
+    provideFormData(
+      "Редактировать детали курса",
+      <EditCourseDetails
+        courseId={courseId}
+        requirements={data?.requirements!}
+        annotations={data?.annotations!}
+      />
+    );
+  };
 
   if (isLoading) {
     return <p>Загрузка данных</p>;
@@ -55,6 +71,7 @@ const CourseDetails = () => {
               <Button
                 value="Редактировать"
                 className="w-max bg-yellow-400 hover:bg-yellow-600"
+                onClick={() => handleEditButtonClick()}
               />
             </WithPermission>
           )}
@@ -64,6 +81,7 @@ const CourseDetails = () => {
             <Button
               value="Редактировать"
               className="w-max bg-yellow-400 hover:bg-yellow-600"
+              onClick={() => handleEditButtonClick()}
             />
           )}
 
@@ -100,9 +118,10 @@ const CourseDetails = () => {
                 <Button
                   className="w-max m-4"
                   onClick={() => {
-                    setHeader("Создать уведомление");
-                    setBody(<AddNotificationForm courseId={data.id} />);
-                    setShow();
+                    provideFormData(
+                      "Создать уведомление",
+                      <AddNotificationForm courseId={data.id} />
+                    );
                   }}
                   value="Создать уведомление"
                 />
@@ -124,9 +143,10 @@ const CourseDetails = () => {
                   <Button
                     className="w-max m-4"
                     onClick={() => {
-                      setHeader("Добавить учителя");
-                      setBody(<AddTeacherForm courseId={data.id} />);
-                      setShow();
+                      provideFormData(
+                        "Добавить учителя",
+                        <AddTeacherForm courseId={data.id} />
+                      );
                     }}
                     value="Добавить учителя"
                   />
@@ -135,9 +155,10 @@ const CourseDetails = () => {
                     <Button
                       className="w-max m-4"
                       onClick={() => {
-                        setHeader("Добавить учителя");
-                        setBody(<AddTeacherForm courseId={data.id} />);
-                        setShow();
+                        provideFormData(
+                          "Добавить учителя",
+                          <AddTeacherForm courseId={data.id} />
+                        );
                       }}
                       value="Добавить учителя"
                     />
@@ -151,6 +172,9 @@ const CourseDetails = () => {
             Студенты: (
               <CourseInfoListContainer>
                 <StudentsList
+                  setHeader={setHeader}
+                  setBody={setBody}
+                  setShow={setShow}
                   courseId={courseId}
                   students={data.students}
                   teachers={data.teachers}

@@ -6,13 +6,13 @@ export type Group = {
   name: string;
 }
 
-type AddGroupModel = {
-    name: string;
+type AddGroup = {
+  name: string;
 }
 
-type EditGroupModel = {
-    id: string;
-    name: string;
+type EditGroup = {
+  id: string;
+  name: string;
 }
 
 export const groupsApi = emptySplitApi.injectEndpoints({
@@ -27,8 +27,8 @@ export const groupsApi = emptySplitApi.injectEndpoints({
       : 
         [{type: "Groups", id: "List"}]
     }),
-    addGroup: build.mutation<void, AddGroupModel>({
-        query(body: AddGroupModel) {
+    addGroup: build.mutation<void, AddGroup>({
+        query(body) {
             return {
                 url: '/groups',
                 method: "POST",
@@ -37,7 +37,7 @@ export const groupsApi = emptySplitApi.injectEndpoints({
         },
         invalidatesTags: [{type: 'Groups', id: "List"}],
     }),
-    updateGroup:build.mutation<Group, EditGroupModel>({
+    updateGroup:build.mutation<Group, EditGroup>({
       query(data) {
         const { id, ...body } = data
         return {

@@ -1,16 +1,10 @@
 import { useRegisterUserMutation } from "@/services/Account/accountApi";
+import { Registration } from "@/services/Account/models";
 import Input from "@/ui/Input";
 import { NextPage } from "next";
 import { useRouter } from "next/router";
 import { useForm } from "react-hook-form";
-
-export interface IFormInputs {
-  fullName: string;
-  birthDate: Date;
-  email: string;
-  password: string;
-  repeatPassword: string;
-}
+import toast from "react-hot-toast";
 
 const Registration: NextPage = () => {
   const {
@@ -18,19 +12,22 @@ const Registration: NextPage = () => {
     watch,
     handleSubmit,
     formState: { errors },
-  } = useForm<IFormInputs>();
+  } = useForm<Registration>();
   const router = useRouter();
   const [registerUser] = useRegisterUserMutation();
 
-  const onSubmit = async (data: IFormInputs) => {
-    const response = await registerUser(data);
-    if ("data" in response) {
-      localStorage.setItem("token", response.data.token);
+  const onSubmit = async (data: Registration) => {
+    try {
+      await registerUser(data).unwrap();
+      toast.success("Registration was successful");
       router.push("/");
+    } catch (err) {
+      toast.error("Registration wasn't successful");
     }
   };
   return (
-    <div className="flex justify-center items-center w-full h-screen">
+    <div className="flex flex-col items-center w-full h-full mt-8">
+      <p className="text-4xl">Регистрация</p>
       <form
         className="w-full flex flex-col items-center"
         onSubmit={handleSubmit(onSubmit)}
@@ -40,7 +37,15 @@ const Registration: NextPage = () => {
           name="fullName"
           type="text"
           register={register}
-          rules={{ required: "ФИО обязательно" }}
+          rules={{
+            required: "ФИО обязательно",
+            validate: (value: string) => {
+              const fio = value.split(" ");
+              if (!fio[0]?.length || !fio[1]?.length || !fio[2]?.length) {
+                return "ФИО является неверным";
+              }
+            },
+          }}
           errors={errors}
         />
         <Input
@@ -48,7 +53,21 @@ const Registration: NextPage = () => {
           name="birthDate"
           type="date"
           register={register}
-          rules={{ required: "Дата рождения обязательна" }}
+          rules={{
+            required: "Дата рождения обязательна",
+            validate: (value: string) => {
+              const now = new Date(Date.now());
+              const year = now.getFullYear();
+              const month = now.getMonth();
+              const day = now.getDate();
+              const inputDate = value.split("-");
+              if (+inputDate[0] == year && +inputDate[1] == month + 1) {
+                if (day < +inputDate[2]) {
+                  return "Дата не может быть позже чем сегодня";
+                }
+              }
+            },
+          }}
           errors={errors}
         />
         <Input
@@ -56,7 +75,13 @@ const Registration: NextPage = () => {
           name="email"
           type="email"
           register={register}
-          rules={{ required: "Email является обязательным параметром" }}
+          rules={{
+            required: "Email является обязательным параметром",
+            pattern: {
+              value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
+              message: "Email адрес является невалиданым",
+            },
+          }}
           errors={errors}
         />
         <Input
@@ -66,6 +91,11 @@ const Registration: NextPage = () => {
           register={register}
           rules={{
             required: "Пароль является обязательным параметром",
+            pattern: {
+              value: /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.{8,})/,
+              message:
+                "Должен содержать 8 символов, 1 заглавный, 1 строчный и 1 цифру",
+            },
           }}
           errors={errors}
         />

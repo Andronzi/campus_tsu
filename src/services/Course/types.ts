@@ -10,8 +10,7 @@ export type Course = {
     remainingSlotsCount: number;
     status: CourseStatus;
     semester: Semester;
-  }
-  
+}  
   
 type ExcludeFromCourse = "id" | "remainingSlotsCount" | "status";
 export type CourseRequest = Omit<Course, ExcludeFromCourse> & { 
@@ -66,4 +65,11 @@ export type AddNotification = {
 export type EditCourseStatus = {
     courseId: string;
     status: CourseStatus
+}
+
+export type EditStudentMark = {
+    courseId: string;
+    studentId: string;
+    markType: "Midterm" | "Final";
+    mark: StudentMarks;
 }

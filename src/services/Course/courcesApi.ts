@@ -1,5 +1,5 @@
 import { emptySplitApi } from '../emptySplitApi';
-import { AddNotification, AddTeacherRequest, Course, CourseDetails, CourseRequest, EditCourseStatus, StudentStatus } from './types';
+import { AddNotification, AddTeacherRequest, Course, CourseDetails, CourseRequest, EditCourseStatus, EditStudentMark, StudentStatus } from './types';
 
 export const courcesApi = emptySplitApi.injectEndpoints({
   endpoints: (build) => ({
@@ -79,9 +79,44 @@ export const courcesApi = emptySplitApi.injectEndpoints({
         }
       },
       invalidatesTags: ["CoursesDetails"]
+    }),
+    editCourseData: build.mutation<void, { requirements: string, annotations: string, courseId: string }>({
+      query(data) {
+        const {courseId, ...body} = data;
+        return {
+            url: `/courses/${courseId}`,
+            method: "PUT",
+            body,
+        }
+      },
+      invalidatesTags: ["CoursesDetails"]
+    }),
+    editCourseMark: build.mutation<void, EditStudentMark>({
+      query(data) {
+        const { courseId, studentId, ...body } = data;
+        return {
+          url: `/courses/${courseId}/marks/${studentId}`,
+          method: "POST",
+          body,
+        }
+      },
+      invalidatesTags: ["CoursesDetails"]
     })
   }),
   overrideExisting: false,
 })
 
-export const { useGetUserCourcesQuery, useGetCourcesByGroupIdQuery, useGetTeachingCoursesQuery, useAddCourseMutation, useAddUserToCourseMutation, useAddNotificationMutation, useAddteacherMutation, useGetCourcesDetailsQuery, useEditStudentStatusMutation, useEditCourseStatusMutation } = courcesApi
+export const { 
+  useGetUserCourcesQuery, 
+  useGetCourcesByGroupIdQuery, 
+  useGetTeachingCoursesQuery, 
+  useAddCourseMutation, 
+  useAddUserToCourseMutation, 
+  useAddNotificationMutation, 
+  useAddteacherMutation, 
+  useGetCourcesDetailsQuery, 
+  useEditStudentStatusMutation, 
+  useEditCourseDataMutation,
+  useEditCourseStatusMutation, 
+  useEditCourseMarkMutation 
+} = courcesApi

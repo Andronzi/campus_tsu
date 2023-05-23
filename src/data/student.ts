@@ -10,7 +10,6 @@ export const studentStatusColors = {
     InQueue: "text-blue-500",
 }
 
-
 export const studentResultConvertions = {
     NotDefined: "отметки нет",
     Passed: "успешно пройдена",

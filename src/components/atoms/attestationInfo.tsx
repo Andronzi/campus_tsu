@@ -1,19 +1,43 @@
-import {
-  studentResultColors,
-  studentResultConvertions,
-} from "@/pages/data/student";
+import { studentResultColors, studentResultConvertions } from "@/data/student";
+import ChangeStudentMarkForm from "@/pages/courses/forms/changeStudentMarkForm";
 import { StudentMarks } from "@/services/Course/types";
 import { FC } from "react";
 import Button from "./button";
 
 type AttestationProps = {
-  type: string;
+  setHeader: Function;
+  setBody: Function;
+  setShow: Function;
+  type: any;
+  studentId: string;
+  courseId: string;
   result: StudentMarks;
 };
 
-const Attestation: FC<AttestationProps> = ({ type, result }) => (
+const Attestation: FC<AttestationProps> = ({
+  setHeader,
+  setBody,
+  setShow,
+  type,
+  result,
+  courseId,
+  studentId,
+}) => (
   <div className="flex items-center basis-1/2">
-    <p className="text-sm text-blue-400 underline cursor-pointer">
+    <p
+      className="text-sm text-blue-400 underline cursor-pointer"
+      onClick={() => {
+        setHeader(`Изменения для ${type} аттестация`);
+        setBody(
+          <ChangeStudentMarkForm
+            courseId={courseId}
+            studentId={studentId}
+            markType={type}
+          />
+        );
+        setShow();
+      }}
+    >
       {type} аттестация
     </p>
     <Button

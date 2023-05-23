@@ -1,4 +1,5 @@
-import { Role, useGetUserRolesQuery } from "@/services/Account/accountApi";
+import { useGetUserRolesQuery } from "@/services/Account/accountApi";
+import { Role } from "@/services/Account/models";
 import { FC, ReactElement } from "react";
 
 type WithPermissionProps = {

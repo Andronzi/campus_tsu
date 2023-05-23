@@ -1,34 +1,21 @@
 import { emptySplitApi } from '../emptySplitApi';
-
-export type Profile = {
-  fullName: string;
-  email: string;
-  birthDate: Date;
-}
-
-export type Login = {
-  email: string;
-  password: string;
-}
-
-export type IUser = {
-  id: string;
-  fullName: string;
-}
-
-export type Registration = Profile & Login;
-
-export type Role = "Teacher" | "Student" | "Admin";
-
-export type RolesList = {
-  [P in Role as `is${P}`]: boolean;
-}
+import { Login, Profile, ProfileRequest, Registration, RolesList, User } from './models';
 
 export const accountApi = emptySplitApi.injectEndpoints({
   endpoints: (build) => ({
     getUserProfile: build.query<Profile, string | void>({
       query: () => '/profile',
       providesTags: ["Profile"]
+    }),
+    editUserProfile: build.mutation<Profile, ProfileRequest>({
+      query: (body) => {
+        return {
+          url: '/profile',
+          method: "PUT",
+          body
+        }
+      },
+      invalidatesTags: ["Profile"]
     }),
     registerUser: build.mutation<{token: string}, Registration>({
       query(body: Registration) {
@@ -38,6 +25,14 @@ export const accountApi = emptySplitApi.injectEndpoints({
             body,
         }
       },
+      async onQueryStarted(_, { dispatch, queryFulfilled }) {
+        try {
+          const { data } = await queryFulfilled;
+          localStorage.setItem("token", data.token);
+        } catch (err) {
+          console.log(err);
+        }
+      }
     }),
     loginUser: build.mutation<{ token: string }, Login>({
       query(body: Login) {
@@ -76,7 +71,7 @@ export const accountApi = emptySplitApi.injectEndpoints({
     getUserRoles: build.query<RolesList, void>({
       query: () => "/roles",
     }),
-    getAllUsers: build.query<IUser[], void>({
+    getAllUsers: build.query<User[], void>({
       query: () => "/users"
     })
   }),
@@ -85,9 +80,10 @@ export const accountApi = emptySplitApi.injectEndpoints({
   
 export const { 
   useGetUserProfileQuery, 
+  useEditUserProfileMutation,
   useRegisterUserMutation, 
   useLoginUserMutation, 
   useLogoutUserMutation, 
   useGetUserRolesQuery, 
   useGetAllUsersQuery 
-} = accountApi
+} = accountApi;

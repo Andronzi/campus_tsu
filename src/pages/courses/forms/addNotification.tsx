@@ -4,6 +4,7 @@ import { AddNotification } from "@/services/Course/types";
 import Input from "@/ui/Input";
 import { FC } from "react";
 import { Controller, useForm } from "react-hook-form";
+import { toast } from "react-hot-toast";
 
 type AddNotificationFormProps = {
   courseId: string;
@@ -25,7 +26,12 @@ const AddNotificationForm: FC<AddNotificationFormProps> = ({ courseId }) => {
   const [addNotification] = useAddNotificationMutation();
 
   const onSubmit = async (data: AddNotification) => {
-    addNotification({ ...data, courseId });
+    try {
+      await addNotification({ ...data, courseId }).unwrap();
+      toast.success("Комментарий успешно добавлен");
+    } catch (err) {
+      toast.error("Не удалось добавить комментарий");
+    }
   };
   return (
     <div className="flex justify-start w-full">
@@ -57,7 +63,7 @@ const AddNotificationForm: FC<AddNotificationFormProps> = ({ courseId }) => {
             </>
           )}
         />
-        <Button className="text-white w-full ml-0 mt-6" value="Создать" />
+        <Button className="text-white w-full ml-0 mt-6" value="Добавить" />
       </form>
     </div>
   );

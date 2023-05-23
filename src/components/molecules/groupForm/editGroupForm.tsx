@@ -1,6 +1,7 @@
 import { useUpdateGroupMutation } from "@/services/Groups/groupApi";
 import { FC } from "react";
 import { useForm } from "react-hook-form";
+import toast from "react-hot-toast";
 import GroupFormJSX from "./groupFormJSX";
 import { IGroupForm } from "./types";
 
@@ -17,7 +18,12 @@ const EditGroupForm: FC<EditGroupProps> = ({ groupId }) => {
   const [updateGroup] = useUpdateGroupMutation();
 
   const onSubmit = async (data: IGroupForm) => {
-    await updateGroup({ id: groupId, name: data.name });
+    try {
+      await updateGroup({ id: groupId, name: data.name }).unwrap();
+      toast.success("Группа успешно добавлена");
+    } catch (err) {
+      toast.error("Не удалось добавить группу");
+    }
   };
   return (
     <GroupFormJSX

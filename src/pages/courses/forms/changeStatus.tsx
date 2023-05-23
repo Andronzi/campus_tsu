@@ -3,6 +3,7 @@ import { useEditCourseStatusMutation } from "@/services/Course/courcesApi";
 import { EditCourseStatus } from "@/services/Course/types";
 import { FC } from "react";
 import { useForm } from "react-hook-form";
+import toast from "react-hot-toast";
 
 type ChangeCourseStatusFormProps = {
   courseId: string;
@@ -13,7 +14,6 @@ const ChangeCourseStatusForm: FC<ChangeCourseStatusFormProps> = ({
 }) => {
   const {
     register,
-    control,
     handleSubmit,
     formState: { errors },
   } = useForm<EditCourseStatus>({
@@ -24,7 +24,12 @@ const ChangeCourseStatusForm: FC<ChangeCourseStatusFormProps> = ({
   const [editCourseStatus] = useEditCourseStatusMutation();
 
   const onSubmit = async (data: EditCourseStatus) => {
-    editCourseStatus({ ...data, courseId });
+    try {
+      await editCourseStatus({ ...data, courseId }).unwrap();
+      toast.success("Статус курса успешно изменен");
+    } catch (err) {
+      toast.error("Не удалось изменить статус курса");
+    }
   };
   return (
     <div className="flex justify-start w-full">
@@ -36,7 +41,9 @@ const ChangeCourseStatusForm: FC<ChangeCourseStatusFormProps> = ({
           <label className="flex">
             Открыт для записи
             <input
-              {...register("status")}
+              {...register("status", {
+                required: "Статус является обязательным параметром",
+              })}
               className="ml-2"
               type="radio"
               value="OpenForAssigning"
@@ -61,7 +68,10 @@ const ChangeCourseStatusForm: FC<ChangeCourseStatusFormProps> = ({
             />
           </label>
         </div>
-        <Button className="text-white w-full ml-0 mt-6" value="Создать" />
+        <Button
+          className="text-white w-full ml-0 mt-6 bg-yellow-400 hover:bg-yellow-600"
+          value="Изменить"
+        />
       </form>
     </div>
   );
